@@ -1,0 +1,52 @@
+///100 Days of RTL///
+
+///Abilash P///
+
+///4 bit Johnson Counter or ring counter (Synchronous Reset)///
+
+module counter_tb ();
+  reg CLK, RST, ring_or_john;
+  wire [3:0]out;
+  
+  counter DUT (.CLK(CLK), .RST(RST), .ring_or_john(ring_or_john), .out(out));
+  
+  initial 
+    begin
+      CLK=1;
+      forever #5 CLK = ~CLK;  
+    end
+  
+  initial
+    begin
+      ring_or_john = 1'b0;
+      RST = 1'b1;
+      #10;
+      RST = 1'b0;
+      #90;
+      RST = 1'b1;
+      #10;
+      RST = 1'b0;
+      #80;
+      
+      ring_or_john = 1'b1;
+      RST = 1'b1;
+      #10;
+      RST = 1'b0;
+      #100;
+      RST = 1'b1;
+      #10;
+      RST = 1'b0;
+      #80;
+      $finish;
+    end
+  
+    initial
+     begin
+       $dumpfile("dump.vcd");
+       $dumpvars(1);
+     end
+  
+  initial
+    $monitor("simtime = %g, CLK = %b, Reset = %b, out = %b", $time, CLK, RST, out);
+  
+endmodule
