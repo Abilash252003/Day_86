@@ -1,0 +1,44 @@
+///100 Days of RTL///
+
+///Abilash P///
+
+///4 bit Johnson Counter or ring counter(Synchronous Reset)///
+
+module counter (CLK, RST, ring_or_john, out);
+  input  CLK, RST, ring_or_john;
+  output reg [3:0]out;
+  integer i;
+  
+  always @ (posedge CLK)
+    begin
+      if(ring_or_john)
+        begin
+          if(RST)
+            out<=0;
+          else
+            begin
+              out[3] <= ~out[0];      
+              for(i=0; i<3; i=i+1)    
+                begin
+                  out[i] <= out[i+1];
+                end
+            end
+        end
+      
+      else
+        begin
+          if(RST)
+            out<=1;
+          else
+            begin
+              out[3] <= out[0];      
+              for(i=0; i<3; i=i+1)    
+                begin
+                  out[i] <= out[i+1];
+                end
+            end
+        end
+    end
+endmodule
+        
+        
